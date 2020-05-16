@@ -6,24 +6,6 @@ import { addGroceryItem, deleteGroceryItem, setGroceryItemApproved } from './act
 import Swipeable from 'react-native-swipeable';
 import { Link } from '@react-navigation/native';
 
-// const initialGroceryItems = [
-//     {
-//         name: 'bananas'
-//     },
-//     {
-//         name: 'apples'
-//     },
-//     {
-//         name: 'shrimp'
-//     },
-//     {
-//         name: 'toy'
-//     },
-//     {
-//         name: 'toyyy'
-//     },
-// ]
-
 const GroceryItem = ({ item, onDeleteGroceryItem, onSetGroceryItemApproved }) => {
     const handleToggleApprove = () => {
         if (item.approved) {
@@ -35,7 +17,7 @@ const GroceryItem = ({ item, onDeleteGroceryItem, onSetGroceryItemApproved }) =>
     }
     const leftButtons = [
         <TouchableOpacity
-            style={{backgroundColor: 'red', marginTop: 10, marginBottom: 10}}
+            style={{backgroundColor: 'red', paddingVertical: 10, paddingRight: 15}}
             onPress={() => {onDeleteGroceryItem(item.name)}}
         >
             <Text style={{color: 'black', fontSize: 28, textAlign: 'right'}}>X</Text>
@@ -44,7 +26,7 @@ const GroceryItem = ({ item, onDeleteGroceryItem, onSetGroceryItemApproved }) =>
     ];
     const rightButtons = [
         <TouchableOpacity
-            style={{backgroundColor: item.approved ? 'yellow' : 'green', marginTop: 10, marginBottom: 10}}
+            style={{backgroundColor: item.approved ? 'yellow' : 'green', paddingVertical: 10, paddingLeft: 15}}
             onPress={handleToggleApprove}
         >
             <Text style={{color: 'black', fontSize: 28, textAlign: 'left'}}>{item.approved ? 'N' : 'Y'}</Text>
@@ -95,7 +77,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
             <FlatList style={{ flex: 1 }}
                 data={sortedGroceryItems}
                 renderItem={({ item }) => <GroceryItem item={item} onDeleteGroceryItem={onDeleteGroceryItem} onSetGroceryItemApproved={onSetGroceryItemApproved} />}
-                keyExtractor={item => (item.name + '---' + item.approved)}
+                keyExtractor={item => (item.name + ':::' + item.approved)}
             />
             {
                 errorMessage && (
@@ -103,7 +85,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
                 )
             }
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                style={styles.inputText}
                 onChangeText={text => setInputText(text)}
                 value={inputText}
                 onSubmitEditing={(evt) => handleSubmit(evt.nativeEvent.text)}
@@ -140,7 +122,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderTopColor: '#eeeeee',
+        borderTopWidth: 1
     },
     unapprovedRow: {
         flex: 1,
@@ -151,13 +135,28 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#eeeeee'
+        backgroundColor: '#eeeeee',
+        borderTopColor: '#dddddd',
+        borderTopWidth: 1
     },
     headingText: {
-        color: 'black',
+        color: 'white',
         fontSize: 32,
-        marginLeft: 15
-    }
+        backgroundColor: 'lightblue',
+        paddingTop: 10,
+        paddingBottom: 10,
+        textAlign: 'center'
+    },
+    inputText: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 15,
+        paddingHorizontal: 15,
+    },
 });
 
 const mapStateToProps = state => {
@@ -169,7 +168,7 @@ const mapStateToProps = state => {
 
 
 const mapDispatchToProps = dispatch => ({
-    onAddGroceryItem: item => dispatch(addGroceryItem(item)),
+    onAddGroceryItem: item => {dispatch(addGroceryItem(item))},
     onDeleteGroceryItem: name => dispatch(deleteGroceryItem(name)),
     onSetGroceryItemApproved: (name, approved) => dispatch(setGroceryItemApproved(name, approved))
 })

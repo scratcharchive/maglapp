@@ -9,27 +9,22 @@ import Chores from './Chores'
 import Meals from './Meals'
 import Groceries from './Groceries'
 import General from './General'
+import Personal from './Personal'
+import Chat from './Chat'
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 import PersistControl from './PersistControl';
+import { SET_PERSONAL_SETTING } from './actions';
 
 const axios = require('axios');
-
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-    </View>
-  );
-}
 
 const sequentialActionMiddleware = store => next => action => {
   const submitSequentialAction = async (theAction) => {
     const result = await axios.post('http://192.168.1.241:16201/submitSequentialAction', {action: theAction});
   }
-  if (action.source !== 'server') {
+  if ((action.source !== 'server') && (action.type != SET_PERSONAL_SETTING)) {
     submitSequentialAction(action);
     return;
   }
@@ -60,6 +55,8 @@ function App() {
           <Stack.Screen name="Meals" component={Meals} />
           <Stack.Screen name="Groceries" component={Groceries} />
           <Stack.Screen name="General" component={General} />
+          <Stack.Screen name="Personal" component={Personal} />
+          <Stack.Screen name="Chat" component={Chat} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,12 +1,30 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { addGroceryItem, deleteGroceryItem, setGroceryItemApproved } from './actions';
+import Swipeable from 'react-native-swipeable';
+import { Link } from '@react-navigation/native';
 
-const Meals = () => {
+
+const Meals = ({ generalSettings }) => {
     return (
-        <View>
-            <Text>Meals yo!</Text>
+        <View style={{ flex: 1 }}>
+            <Text>Meal chart will appear here.</Text>
         </View>
     )
 }
 
-export default Meals
+const mapStateToProps = state => {
+    return {
+        generalSettings: state.generalSettings,
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Meals)

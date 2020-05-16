@@ -1,12 +1,17 @@
+
+const fs = require('fs');
 const express = require("express");
 const app = express();
 const cors = require('cors');
+const util = require('util');
 
+let somethingChanged = false;
 class SequentialActionManager {
     constructor() {
         this.actions = [];
     }
     submitAction(action) {
+        somethingChanged = true;
         this.actions.push(action);
     }
     retrieveActions(startIndex) {
@@ -51,6 +56,30 @@ function sleepMsec(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-app.listen(16201, () => {
- console.log("Server running on port 16201");
-});
+async function main() {
+    const readFile = util.promisify(fs.readFile);
+    const writeFile = util.promisify(fs.writeFile);
+    let actions;
+    try {
+        actions = JSON.parse(await readFile(process.env.ACTIONS_FILE));
+    }
+    catch(err) {
+        console.error('Error loading actions file.');
+        actions = [];
+    }
+    for (let action of actions) {
+        globalSequentialActionManager.submitAction(action);
+    }
+    app.listen(16201, () => {
+       console.log("Server running on port 16201");
+    });
+    while (true) {
+        // save every 10 seconds
+        const actions = globalSequentialActionManager.retrieveActions(0);
+        if (somethingChanged) {
+            await writeFile(process.env.ACTIONS_FILE, JSON.stringify(actions, null, 4));
+        }
+        await sleepMsec(10000);
+    }
+}
+main();

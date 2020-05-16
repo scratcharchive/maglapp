@@ -1,7 +1,6 @@
 import { SET_GENERAL_SETTING } from '../actions'
 
-const groceryItems = (state = {}, action) => {
-    let item0;
+const generalSettings = (state = {}, action) => {
     switch (action.type) {
         case SET_GENERAL_SETTING:
             return {
@@ -17,4 +16,4 @@ function findGroceryItem(state, name) {
     return state.filter(item => (item.name === name))[0];
 }
 
-export default groceryItems
+export default generalSettings
