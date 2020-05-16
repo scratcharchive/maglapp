@@ -11,6 +11,7 @@ import Groceries from './Groceries'
 import General from './General'
 import Personal from './Personal'
 import Chat from './Chat'
+import Dojo from './Dojo'
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -57,6 +58,7 @@ function App() {
           <Stack.Screen name="General" component={General} />
           <Stack.Screen name="Personal" component={Personal} />
           <Stack.Screen name="Chat" component={Chat} />
+          <Stack.Screen name="Dojo" component={Dojo} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
