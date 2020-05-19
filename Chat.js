@@ -34,7 +34,7 @@ const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem }) =
             marginLeft: 30,
             marginRight: 30,
             marginBottom: 30,
-            marginTop: 5,
+            marginTop: 10,
             paddingHorizontal: 15
         },
         usernameText: {

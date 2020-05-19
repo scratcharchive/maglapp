@@ -18,6 +18,11 @@ const styles = {
     dayHeading: {
         fontSize: 24
     },
+    header: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        padding: 20
+    },
     pointCount: {
         color: 'green'
     }
@@ -48,20 +53,25 @@ const Reward = ({ reward, dojoRewardCategories }) => {
 }
 
 function formatDate(date) {
-    const monthName = date.toLocaleString('default', { month: 'short' });
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return `${days[date.getDay()]}, ${monthName} ${date.getDate()}`;
+    return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
 }
 
 const DojoDay = ({ dojoDay, dojoRewardCategories }) => {
     const date = new Date(dojoDay.dayNumber * millisecondsPerDay);
     const totalDayPoints = dojoDay.rewards.map(reward => reward.numPoints).reduce((a, b) => (a + b), 0);
 
+    const handleAdd = () => {
+
+    }
+
     return (
-        <View style={{marginBottom: 20}}>
+        <View style={{marginBottom: 10, marginTop: 10, borderTopColor: 'lightgray', borderTopWidth: 1}}>
+            
             <Text style={styles.dayHeading}>
-                <Text style={{ fontWeight: 'bold' }}>{formatDate(date)}</Text>
-                <Text style={styles.pointCount}>({totalDayPoints} points)</Text>
+                <Text style={{ fontWeight: 'bold', marginLeft: 20 }}>{formatDate(date)}</Text>
+                <Text style={styles.pointCount}>&nbsp;&nbsp;&nbsp;({totalDayPoints} points)</Text>
             </Text>
             <View style={{ flexDirection: "row" }}>
                 {
@@ -69,7 +79,7 @@ const DojoDay = ({ dojoDay, dojoRewardCategories }) => {
                         <Reward key={ii} reward={reward} dojoRewardCategories={dojoRewardCategories} />
                     ))
                 }
-                <Link to="/addDojoRewards" style={{ fontSize: 24, color: "blue", margin: 10 }}>add</Link>
+                <Button onPress={handleAdd} title="Add" color="blue" />
             </View>
         </View>
     );
@@ -101,8 +111,11 @@ const Dojo = ({ generalSettings, personalSettings, dojoRewards, dojoRewardCatego
         ];
     }
 
+    const totalPoints = dojoRewards.map(r => r.numPoints).reduce((a, b) => (a+b), 0);
+
     return (
         <View style={{ flex: 1 }}>
+            <Text style={styles.header}>Dojo total: <Text style={styles.pointCount}>{totalPoints}</Text></Text>
             <ScrollView style={{ flex: 1 }}>
                 {
                     dojoDays.map(dojoDay => (
@@ -128,6 +141,7 @@ const mapStateToProps = state => ({
     chatItems: state.chatItems,
     generalSettings: state.generalSettings,
     personalSettings: state.personalSettings,
+    dojoRewards: state.dojoRewards || [],
     dojoRewardCategories: state.dojoRewardCategories || {}
 })
 

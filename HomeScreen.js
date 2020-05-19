@@ -7,13 +7,19 @@ import { connect } from 'react-redux';
 
 function Item({ title, to, imageUri }) {
   return (
-    <View style={styles.item} onPress={() => {console.info('test')}}>
-        <Link to={to}><Text style={styles.title}>{title}</Text><Image
-          style={styles.image}
-          source={{
-            uri: imageUri
-          }}
-        /></Link>
+    <View style={styles.item} onPress={() => { console.info('test') }}>
+      <Link to={to}><Text style={styles.title}>{title}</Text>
+        {
+          imageUri && (
+            <Image
+              style={styles.image}
+              source={{
+                uri: imageUri
+              }}
+            />
+          )
+        }
+      </Link>
     </View>
   );
 }
@@ -69,10 +75,10 @@ const HomeScreen = ({ navigation, generalSettings, groceryItems }) => {
       <Text style={styles.greeting}><Link to="/General">{generalSettings.greetingText || "Generic greeting"}</Link></Text>
       <FlatList
         data={BUTTONS}
-        renderItem={({ item }) => <Item title={item.title} to={item.to} imageUri={item.imageUri}/>}
+        renderItem={({ item }) => <Item title={item.title} to={item.to} imageUri={item.imageUri} />}
         keyExtractor={item => item.id}
       />
-      
+
       {/* <View>
         <View style={styles.button}><Text>Settings</Text></View>
         <View style={styles.button}><Text>Home</Text></View>
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   greeting: {
-    color: 'violet',
+    color: 'purple',
     fontSize: 32,
     textAlign: 'center',
     marginBottom: 20
@@ -118,8 +124,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-      generalSettings: state.generalSettings,
-      groceryItems: state.groceryItems
+    generalSettings: state.generalSettings,
+    groceryItems: state.groceryItems
   }
 }
 
