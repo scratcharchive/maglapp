@@ -23,7 +23,7 @@ const axios = require('axios');
 
 const sequentialActionMiddleware = store => next => action => {
   const submitSequentialAction = async (theAction) => {
-    const result = await axios.post('http://192.168.1.241:16201/submitSequentialAction', {action: theAction});
+    const result = await axios.post('http://192.168.1.25:16201/submitSequentialAction', {action: theAction});
   }
   if ((action.source !== 'server') && (action.type != SET_PERSONAL_SETTING)) {
     submitSequentialAction(action);

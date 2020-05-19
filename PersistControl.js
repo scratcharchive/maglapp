@@ -21,7 +21,7 @@ const PersistControl = ({ dispatch, onSetPersonalSetting, personalSettings }) =>
         else if (mode === 'syncing') {
             setMode('syncStarted');
             await sleepMsec(300);
-            const result = await axios.post('http://192.168.1.241:16201/retrieveSequentialActions', {startIndex: currentIndex});
+            const result = await axios.post('http://192.168.1.25:16201/retrieveSequentialActions', {startIndex: currentIndex});
             if (result.data) {
                 for (let action of result.data.actions) {
                     dispatch({...action, source: 'server'});
