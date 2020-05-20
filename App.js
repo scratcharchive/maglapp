@@ -12,6 +12,7 @@ import General from './General'
 import Personal from './Personal'
 import Chat from './Chat'
 import Dojo from './Dojo'
+import BathroomStatus from './BathroomStatus'
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -45,23 +46,34 @@ const store = createStore(rootReducer, {}, applyMiddleware(sequentialActionMiddl
 
 const Stack = createStackNavigator();
 
+import { ThemeProvider } from 'react-native-elements';
+
+const theme = {
+  Input: {
+    labelStyle: { fontSize: 18, color: 'purple' }
+  }
+};
+
 function App() {
   return (
-    <Provider store={store}>
-      <PersistControl />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Chores" component={Chores} />
-          <Stack.Screen name="Meals" component={Meals} />
-          <Stack.Screen name="Groceries" component={Groceries} />
-          <Stack.Screen name="General" component={General} />
-          <Stack.Screen name="Personal" component={Personal} />
-          <Stack.Screen name="Chat" component={Chat} />
-          <Stack.Screen name="Dojo" component={Dojo} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <PersistControl />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Chores" component={Chores} />
+            <Stack.Screen name="Meals" component={Meals} />
+            <Stack.Screen name="Groceries" component={Groceries} />
+            <Stack.Screen name="General" component={General} />
+            <Stack.Screen name="Personal" component={Personal} />
+            <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="Dojo" component={Dojo} />
+            <Stack.Screen name="BathroomStatus" component={BathroomStatus} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

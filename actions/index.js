@@ -6,6 +6,12 @@ export const SET_PERSONAL_SETTING = 'SET_PERSONAL_SETTING'
 export const ADD_CHAT_ITEM = 'ADD_CHAT_ITEM'
 export const DELETE_CHAT_ITEM = 'DELETE_CHAT_ITEM'
 
+export const ADD_BATHROOM = 'ADD_BATHROOM'
+export const DELETE_BATHROOM = 'DELETE_BATHROOM'
+export const SET_BATHROOM_PROPERTY = 'SET_BATHROOM_PROPERTY'
+
+//action creators
+
 export const addGroceryItem = item => ({
     type: ADD_GROCERY_ITEM,
     item
@@ -42,4 +48,21 @@ export const addChatItem = item => ({
 export const deleteChatItem = id => ({
     type: DELETE_CHAT_ITEM,
     id
+})
+
+export const addBathroom = (bathroomName) => ({
+    type: ADD_BATHROOM,
+    bathroomName
+})
+
+export const deleteBathroom = (bathroomName) => ({
+    type: DELETE_BATHROOM,
+    bathroomName
+})
+
+export const setBathroomStatus = (bathroomName, key, value) => ({
+    type: SET_BATHROOM_PROPERTY,
+    bathroomName,
+    key, // clogged, needsToiletPaper
+    value
 })

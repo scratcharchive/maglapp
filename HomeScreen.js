@@ -4,6 +4,7 @@ import { SafeAreaView, FlatList } from 'react-native';
 import Constants from 'expo-constants';
 import { Link } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import { Input } from 'react-native-elements';
 
 function Item({ title, to, imageUri }) {
   return (
@@ -66,6 +67,12 @@ const HomeScreen = ({ navigation, generalSettings, groceryItems }) => {
       id: 'personal',
       title: 'Personal',
       to: '/Personal',
+      imageUri: ''
+    },
+    {
+      id: 'bathroomStatus',
+      title: 'Bathroom Status',
+      to: '/BathroomStatus',
       imageUri: ''
     }
   ];

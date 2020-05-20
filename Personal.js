@@ -10,7 +10,7 @@ const Personal = ({ personalSettings, onSetPersonalSetting }) => {
     if (isNaN(useFontScaleFactor)) useFontScaleFactor = 1;
     return (
         <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Personal Settings</Text>
+            {/* <Text style={styles.headingText}>Personal Settings</Text> */}
             <Text style={styles.settingText}>User name: &nbsp;
                 <Text style={styles.currentStatusText}>{personalSettings.userName}</Text>
             </Text>

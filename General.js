@@ -4,33 +4,86 @@ import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { addGroceryItem, deleteGroceryItem, setGroceryItemApproved } from './actions';
 import Swipeable from 'react-native-swipeable';
-import { setGeneralSetting } from './actions';
+import { setGeneralSetting, setPersonalSetting } from './actions';
+import { ButtonGroup, Input, FormLabel } from 'react-native-elements';
+import Personal from './Personal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const General = ({ generalSettings, onSetGeneralSetting }) => {
+const General = ({ generalSettings, onSetGeneralSetting, personalSettings, onSetPersonalSetting }) => {
+    const buttons = ['General', 'Personal']
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+    return (
+        <SafeAreaView>
+            <ButtonGroup
+                onPress={(newIndex) => {setSelectedIndex(newIndex)}}
+                selectedIndex={selectedIndex}
+                buttons={buttons}
+                containerStyle={{ height: 100 }}
+            />
+            {
+                buttons[selectedIndex] === 'General' && (
+                    <GeneralOld
+                        generalSettings={generalSettings}
+                        onSetGeneralSetting={onSetGeneralSetting}
+                    />
+                )
+            }
+            {
+                buttons[selectedIndex] === 'Personal' && (
+                    <View style={{flex: 1}}>
+                        <Personal
+                            personalSettings={personalSettings}
+                            onSetPersonalSetting={onSetPersonalSetting}
+                        />
+                    </View>
+                )
+            }
+        </SafeAreaView>
+    )
+}
+
+
+const GeneralOld = ({ generalSettings, onSetGeneralSetting }) => {
     const [internalNumDaysUntilShopping, setInternalNumDaysUntilShopping] = useState(generalSettings.numDaysUntilShopping || 0);
     const [internalGreetingText, setInternalGreetingText] = useState(generalSettings.greetingText);
     return (
-        <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>General Settings</Text>
-            <Text style={styles.settingText}>Greeting text: &nbsp;
+        <View>
+            <Input
+                label={`Greeting text`}
+                placeholder="Hello"
+                onChangeText={text => setInternalGreetingText(text)}
+                value={internalGreetingText}
+                onSubmitEditing={() => { onSetGeneralSetting('greetingText', internalGreetingText) }}
+            />
+
+            <Input
+                label={`Num. days until shopping`}
+                placeholder="7"
+                onChangeText={text => setInternalNumDaysUntilShopping(text)}
+                value={internalNumDaysUntilShopping}
+                onSubmitEditing={() => { onSetGeneralSetting('numDaysUntilShopping', parseInt(internalNumDaysUntilShopping)) }}
+            />
+
+            {/* <Text style={styles.settingText}>Greeting text: &nbsp;
                 <Text style={styles.currentStatusText}>{generalSettings.greetingText}</Text>
             </Text>
             <TextInput
                 style={styles.inputText}
                 onChangeText={text => setInternalGreetingText(text)}
                 value={internalGreetingText}
-                onSubmitEditing={() => {onSetGeneralSetting('greetingText', internalGreetingText)}}
-            />
+                onSubmitEditing={() => { onSetGeneralSetting('greetingText', internalGreetingText) }}
+            /> */}
 
-            <Text style={styles.settingText}>Num. days until shopping trip: &nbsp;
+            {/* <Text style={styles.settingText}>Num. days until shopping trip: &nbsp;
                 <Text style={styles.currentStatusText}>{generalSettings.numDaysUntilShopping}</Text>
             </Text>
             <TextInput
                 style={styles.inputText}
                 onChangeText={text => setInternalNumDaysUntilShopping(text)}
                 value={internalNumDaysUntilShopping + ''}
-                onSubmitEditing={() => {onSetGeneralSetting('numDaysUntilShopping', parseInt(internalNumDaysUntilShopping))}}
-            />
+                onSubmitEditing={() => { onSetGeneralSetting('numDaysUntilShopping', parseInt(internalNumDaysUntilShopping)) }}
+            /> */}
         </View>
     )
 }
@@ -68,12 +121,14 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-    generalSettings: state.generalSettings
+    generalSettings: state.generalSettings,
+    personalSettings: state.personalSettings
 })
 
 
 const mapDispatchToProps = dispatch => ({
-    onSetGeneralSetting: (key, val) => dispatch(setGeneralSetting(key, val))
+    onSetGeneralSetting: (key, val) => dispatch(setGeneralSetting(key, val)),
+    onSetPersonalSetting: (key, val) => dispatch(setPersonalSetting(key, val))
 })
 
 export default connect(
