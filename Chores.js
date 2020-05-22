@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { addGroceryItem, deleteGroceryItem, setGroceryItemApproved } from './actions';
+import { addGroceryItem, deleteGroceryItem, setGroceryItemProperty } from './actions';
 import Swipeable from 'react-native-swipeable';
 import { Link } from '@react-navigation/native';
 
