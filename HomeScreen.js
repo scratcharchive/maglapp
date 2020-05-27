@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation, generalSettings, groceryItems }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.greeting}><Link to="/General">{generalSettings.greetingText || "Generic greeting"}</Link></Text>
+      <Text style={styles.greeting}><Link to="/General">{generalSettings.greetingText || "Hello"}</Link></Text>
       <FlatList
         data={BUTTONS}
         renderItem={({ item }) => <Item title={item.title} to={item.to} imageUri={item.imageUri} />}

@@ -37,14 +37,6 @@ const persistStateMiddleware = store => next => action => {
   return next(action);
 }
 
-function randomString(num_chars) {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < num_chars; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-  return text;
-}
-
 // Create the store
 const store = createStore(rootReducer, {}, applyMiddleware(persistStateMiddleware, thunk))
 
@@ -52,13 +44,12 @@ const listenToActionStream = async (key) => {
   const esc = new EventStreamClient('http://192.168.1.25:16201', 'readwrite', 'readwrite');
   const stream = esc.getStream({ key: key });
   while (true) {
-    await sleepMsec(500);
     const events = await stream.readEvents(3000);
     for (let e of events) {
-      console.log('--- event', e);
       e.source = 'fromActionStream';
       store.dispatch(e);
     }
+    await sleepMsec(500);
   }
 }
 ['bathroomStatus', 'chatItems', 'generalSettings', 'groceryItems'].forEach(
