@@ -3,12 +3,8 @@ import { Text, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { setPersonalSetting } from './actions'
 
-const axios = require('axios');
-
 const PersistControl = ({ dispatch, onSetPersonalSetting, personalSettings }) => {
-
     const [mode, setMode] = useState('initial');
-    const [currentIndex, setCurrentIndex] = useState(0);
 
     const effect = async () => {
         if (mode === 'initial') {
@@ -16,26 +12,13 @@ const PersistControl = ({ dispatch, onSetPersonalSetting, personalSettings }) =>
             for (let key in personalSettings0) {
                 onSetPersonalSetting(key, personalSettings0[key]);
             }
+            setMode('done');
+        }
+        else if (mode === 'done') {
             setMode('syncing');
-        }
-        else if (mode === 'syncing') {
-            setMode('syncStarted');
-            await sleepMsec(300);
-            const result = await axios.post('http://192.168.1.25:16201/retrieveSequentialActions', {startIndex: currentIndex});
-            if (result.data) {
-                for (let action of result.data.actions) {
-                    dispatch({...action, source: 'server'});
-                }
-                setCurrentIndex(currentIndex + result.data.actions.length);
-                setMode('syncFinished');
-            }
-            else {
-                setMode('syncError');
-            }
-        }
-        else if (mode === 'syncFinished') {
             await setItem('personalSettings', personalSettings);
-            setMode('syncing');
+            await sleepMsec(3000);
+            setMode('done');
         }
     }
     useEffect(() => { effect() });

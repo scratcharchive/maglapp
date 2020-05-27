@@ -19,15 +19,19 @@ import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 import PersistControl from './PersistControl';
 import { SET_PERSONAL_SETTING } from './actions';
+import { EventStreamClient } from './loggery'
 
 const axios = require('axios');
 
-const sequentialActionMiddleware = store => next => action => {
-  const submitSequentialAction = async (theAction) => {
-    const result = await axios.post('http://192.168.1.25:16201/submitSequentialAction', {action: theAction});
+const persistStateMiddleware = store => next => action => {
+  const esc = new EventStreamClient('http://192.168.1.25:16201', 'readwrite', 'readwrite');
+  const writeAction = async (key, theAction) => {
+    const stream = esc.getStream({ key: key });
+    await stream.writeEvent(theAction);
   }
-  if ((action.source !== 'server') && (action.type != SET_PERSONAL_SETTING)) {
-    submitSequentialAction(action);
+
+  if ((action.persistKey) && (action.source !== 'fromActionStream')) {
+    writeAction(action.persistKey, action);
     return;
   }
   return next(action);
@@ -42,7 +46,28 @@ function randomString(num_chars) {
 }
 
 // Create the store
-const store = createStore(rootReducer, {}, applyMiddleware(sequentialActionMiddleware, thunk))
+const store = createStore(rootReducer, {}, applyMiddleware(persistStateMiddleware, thunk))
+
+const listenToActionStream = async (key) => {
+  const esc = new EventStreamClient('http://192.168.1.25:16201', 'readwrite', 'readwrite');
+  const stream = esc.getStream({ key: key });
+  while (true) {
+    await sleepMsec(500);
+    const events = await stream.readEvents(3000);
+    for (let e of events) {
+      console.log('--- event', e);
+      e.source = 'fromActionStream';
+      store.dispatch(e);
+    }
+  }
+}
+['bathroomStatus', 'chatItems', 'generalSettings', 'groceryItems'].forEach(
+  key => listenToActionStream(key)
+)
+
+function sleepMsec(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const Stack = createStackNavigator();
 
