@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "maglapp",
-    "slug": "maglapp",
+    "name": "maglapp-beta",
+    "slug": "maglapp-beta",
     "platforms": [
       "ios",
       "android",
