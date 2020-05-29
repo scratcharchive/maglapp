@@ -8,8 +8,7 @@ import HomeScreen from './HomeScreen'
 import Chores from './Chores'
 import Meals from './Meals'
 import Groceries from './Groceries'
-import General from './General'
-import Personal from './Personal'
+import Settings from './Settings'
 import Chat from './Chat'
 import Dojo from './Dojo'
 import BathroomStatus from './BathroomStatus'
@@ -81,8 +80,7 @@ function App() {
             <Stack.Screen name="Chores" component={Chores} />
             <Stack.Screen name="Meals" component={Meals} />
             <Stack.Screen name="Groceries" component={Groceries} />
-            <Stack.Screen name="General" component={General} />
-            <Stack.Screen name="Personal" component={Personal} />
+            <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="Dojo" component={Dojo} />
             <Stack.Screen name="BathroomStatus" component={BathroomStatus} />

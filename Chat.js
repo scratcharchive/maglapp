@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { addChatItem } from './actions';
 import Swipeable from 'react-native-swipeable';
 import { setGeneralSetting } from './actions';
 import personalSettings from './reducers/personalSettings';
+import BottomNavigation from './BottomNavigation';
 
 const ChatItem = ({ item, styles }) => {
     return (
@@ -15,7 +16,7 @@ const ChatItem = ({ item, styles }) => {
     )
 }
 
-const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem }) => {
+const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem, navigation }) => {
     const [internalText, setInternalText] = useState('');
 
     const fontScaleFactor = personalSettings.fontScaleFactor || 1;
@@ -56,7 +57,7 @@ const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem }) =
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
                 {
                     chatItems.map(item => (
@@ -70,7 +71,8 @@ const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem }) =
                 value={internalText}
                 onSubmitEditing={(evt) => handleSubmit(evt.nativeEvent.text)}
             />
-        </View>
+            <BottomNavigation navigation={navigation} />
+        </SafeAreaView>
     )
 }
 

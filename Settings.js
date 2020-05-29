@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { addGroceryItem, deleteGroceryItem, setGroceryItemProperty } from './actions';
 import Swipeable from 'react-native-swipeable';
@@ -8,37 +8,41 @@ import { setGeneralSetting, setPersonalSetting } from './actions';
 import { ButtonGroup, Input, FormLabel } from 'react-native-elements';
 import Personal from './Personal';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomNavigation from './BottomNavigation';
 
-const General = ({ generalSettings, onSetGeneralSetting, personalSettings, onSetPersonalSetting }) => {
+const Settings = ({ generalSettings, onSetGeneralSetting, personalSettings, onSetPersonalSetting, navigation }) => {
     const buttons = ['General', 'Personal']
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{flex: 1}}>
             <ButtonGroup
                 onPress={(newIndex) => {setSelectedIndex(newIndex)}}
                 selectedIndex={selectedIndex}
                 buttons={buttons}
-                containerStyle={{ height: 100 }}
+                containerStyle={{ height: 50 }}
             />
-            {
-                buttons[selectedIndex] === 'General' && (
-                    <GeneralOld
-                        generalSettings={generalSettings}
-                        onSetGeneralSetting={onSetGeneralSetting}
-                    />
-                )
-            }
-            {
-                buttons[selectedIndex] === 'Personal' && (
-                    <View style={{flex: 1}}>
-                        <Personal
-                            personalSettings={personalSettings}
-                            onSetPersonalSetting={onSetPersonalSetting}
+            <ScrollView style={{flex: 1}}>
+                {
+                    buttons[selectedIndex] === 'General' && (
+                        <GeneralOld
+                            generalSettings={generalSettings}
+                            onSetGeneralSetting={onSetGeneralSetting}
                         />
-                    </View>
-                )
-            }
+                    )
+                }
+                {
+                    buttons[selectedIndex] === 'Personal' && (
+                        <View style={{flex: 1}}>
+                            <Personal
+                                personalSettings={personalSettings}
+                                onSetPersonalSetting={onSetPersonalSetting}
+                            />
+                        </View>
+                    )
+                }
+            </ScrollView>
+            <BottomNavigation navigation={navigation} />
         </SafeAreaView>
     )
 }
@@ -134,4 +138,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(General)
+)(Settings)
