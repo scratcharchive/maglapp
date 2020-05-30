@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 const iconSize = 40;
 const iconColor = 'gray';
 
-const BottomNavigation = ({ navigation }) => {
+const BottomNavigation = ({ navigation, styles, screenName }) => {
     const buttons = [
         {
             iconName: "settings",
@@ -32,7 +32,22 @@ const BottomNavigation = ({ navigation }) => {
         <View style={{flexDirection: 'row', justifyContent: "space-evenly"}}>
             {
                 buttons.map(button => (
-                    <Icon key={button.key} name={button.iconName} iconStyle={{}} size={iconSize} color={iconColor} onPress={() => navigation.navigate(button.to)} />
+                    screenName !== button.to ? (
+                        <Icon
+                            key={button.key}
+                            name={button.iconName}
+                            size={styles.bottomNavigation.iconSize}
+                            color={styles.bottomNavigation.iconColor}
+                            onPress={() => navigation.navigate(button.to)}
+                        />
+                    ) : (
+                        <Icon
+                            key={button.key}
+                            name={button.iconName}
+                            size={styles.bottomNavigation.iconSize}
+                            color={styles.bottomNavigation.disabledIconColor}
+                        />
+                    )
                 ))
             }
         </View>

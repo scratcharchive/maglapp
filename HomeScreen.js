@@ -1,31 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import { SafeAreaView, FlatList } from 'react-native';
-import Constants from 'expo-constants';
+import { Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { Input, Icon } from 'react-native-elements';
 import BottomNavigation from './BottomNavigation';
 import { Button } from 'react-native-elements';
-
-function Item({ title, to, imageUri }) {
-  return (
-    <View style={styles.item} onPress={() => { console.info('test') }}>
-      <Link to={to}><Text style={styles.title}>{title}</Text>
-        {
-          imageUri && (
-            <Image
-              style={styles.image}
-              source={{
-                uri: imageUri
-              }}
-            />
-          )
-        }
-      </Link>
-    </View>
-  );
-}
+import styles from './styles';
 
 const HomeScreen = ({ navigation, generalSettings, groceryItems }) => {
   const BUTTONS = [
@@ -62,58 +42,27 @@ const HomeScreen = ({ navigation, generalSettings, groceryItems }) => {
   ];
 
   return (
-    <SafeAreaView style={{...styles.container, flex: 1}}>
-      <Text style={styles.greeting}><Link to="/General">{generalSettings.greetingText || "Hello"}</Link></Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text style={styles.homeScreen.greetingStyle}><Link to="/Settings">{generalSettings.greetingText || "Hello"}</Link></Text>
       <ScrollView style={{flex: 1}}>
         {
           BUTTONS.map(b => (
             <Button
-              key={b.id} title={b.title}
-              type="outline"
-              buttonStyle={{paddingVertical: 15, marginVertical: 10, marginHorizontal: 30, rounded: true}}
+              key={b.id}
+              title={b.title}
+              type={styles.homeScreen.buttonType}
+              buttonStyle={styles.homeScreen.buttonStyle}
+              titleStyle={styles.homeScreen.buttonTitleStyle}
+              rounded={true}
               onPress={() => navigation.navigate(b.to)}
             />
           ))
         }
       </ScrollView>
-      <BottomNavigation navigation={navigation} />
+      <BottomNavigation navigation={navigation} styles={styles} screenName="Home" />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
-  containerBottom: {
-    flex: 1,
-    height: 30,
-  },
-  item: {
-    backgroundColor: '#e5ddf3',
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginVertical: 5,
-    marginHorizontal: 16,
-  },
-  greeting: {
-    color: 'purple',
-    fontSize: 32,
-    textAlign: 'center',
-    marginBottom: 20
-  },
-  title: {
-    color: 'gray',
-    fontSize: 32,
-  },
-  image: {
-    width: 40,
-    height: 40
-  }
-});
 
 const mapStateToProps = state => {
   return {

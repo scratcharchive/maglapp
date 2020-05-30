@@ -71,7 +71,7 @@ async function main() {
         globalSequentialActionManager.submitAction(action);
     }
     app.listen(16201, () => {
-       console.log("Server running on port 16201");
+       console.info("Server running on port 16201");
     });
     while (true) {
         // save every 10 seconds

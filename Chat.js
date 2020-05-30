@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, StyleSheet, TextInput, ScrollView, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { addChatItem } from './actions';
-import Swipeable from 'react-native-swipeable';
-import { setGeneralSetting } from './actions';
-import personalSettings from './reducers/personalSettings';
 import BottomNavigation from './BottomNavigation';
+import styles from './styles';
 
-const ChatItem = ({ item, styles }) => {
+const ChatItem = ({ item }) => {
     return (
-        <Text style={styles.usernameText}>{item.user}: &nbsp;
-            <Text style={styles.chatText}>{item.text}</Text>
+        <Text style={styles.chatScreen.chatItem.usernameTextStyle}>{item.user}: &nbsp;
+            <Text style={styles.chatScreen.chatItem.textStyle}>{item.text}</Text>
         </Text>
     )
 }
@@ -19,33 +16,7 @@ const ChatItem = ({ item, styles }) => {
 const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem, navigation }) => {
     const [internalText, setInternalText] = useState('');
 
-    const fontScaleFactor = personalSettings.fontScaleFactor || 1;
-    const styles = StyleSheet.create({
-        chatText: {
-            color: 'black',
-            fontSize: 20 * fontScaleFactor,
-            marginHorizontal: 35,
-            marginTop: 15 * fontScaleFactor
-        },
-        inputText: {
-            height: 40,
-            borderColor: 'gray',
-            borderWidth: 1,
-            backgroundColor: 'white',
-            marginLeft: 30,
-            marginRight: 30,
-            marginBottom: 30,
-            marginTop: 10,
-            paddingHorizontal: 15
-        },
-        usernameText: {
-            color: 'blue',
-            fontSize: 20 * fontScaleFactor,
-            marginLeft: 35,
-            marginTop: 15 * fontScaleFactor
-        }
-    })
-    
+    // const fontScaleFactor = personalSettings.fontScaleFactor || 1;
 
     const handleSubmit = (text) => {
         onAddChatItem({
@@ -61,17 +32,17 @@ const Chat = ({ generalSettings, personalSettings, chatItems, onAddChatItem, nav
             <ScrollView style={{ flex: 1 }}>
                 {
                     chatItems.map(item => (
-                        <ChatItem item={item} styles={styles} key={item.id} />
+                        <ChatItem item={item} key={item.id} />
                     ))
                 }
             </ScrollView>
             <TextInput
-                style={styles.inputText}
+                style={styles.chatScreen.inputTextStyle}
                 onChangeText={text => setInternalText(text)}
                 value={internalText}
                 onSubmitEditing={(evt) => handleSubmit(evt.nativeEvent.text)}
             />
-            <BottomNavigation navigation={navigation} />
+            <BottomNavigation navigation={navigation} styles={styles} screenName="Chat" />
         </SafeAreaView>
     )
 }

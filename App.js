@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen'
 import Chores from './Chores'
+import Notifications from './Notifications'
 import Meals from './Meals'
 import Groceries from './Groceries'
 import Settings from './Settings'
@@ -64,10 +65,11 @@ const Stack = createStackNavigator();
 import { ThemeProvider } from 'react-native-elements';
 
 const theme = {
-  Input: {
-    labelStyle: { fontSize: 18, color: 'purple' }
-  }
 };
+
+const opts = {
+  animationEnabled: false
+}
 
 function App() {
   return (
@@ -76,14 +78,15 @@ function App() {
         <PersistControl />
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Chores" component={Chores} />
-            <Stack.Screen name="Meals" component={Meals} />
-            <Stack.Screen name="Groceries" component={Groceries} />
-            <Stack.Screen name="Settings" component={Settings} />
-            <Stack.Screen name="Chat" component={Chat} />
-            <Stack.Screen name="Dojo" component={Dojo} />
-            <Stack.Screen name="BathroomStatus" component={BathroomStatus} />
+            <Stack.Screen name="Settings" options={opts} component={Settings} />
+            <Stack.Screen name="Home" options={opts} component={HomeScreen} />
+            <Stack.Screen name="Chat" options={opts} component={Chat} />
+            <Stack.Screen name="Notifications" options={opts} component={Notifications} />
+            <Stack.Screen name="Chores" options={opts} component={Chores} />
+            <Stack.Screen name="Meals" options={opts} component={Meals} />
+            <Stack.Screen name="Groceries" options={opts} component={Groceries} />
+            <Stack.Screen name="Dojo" options={opts} component={Dojo} />
+            <Stack.Screen name="BathroomStatus" options={opts} component={BathroomStatus} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

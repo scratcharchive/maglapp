@@ -226,7 +226,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
 
     return (
         <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Next grocery trip in <Link to="/General">{generalSettings.numDaysUntilShopping}</Link> days!</Text>
+            <Text style={styles.headingText}>Next grocery trip in <Link to="/Settings">{generalSettings.numDaysUntilShopping}</Link> days!</Text>
             {
                 somethingSelected ? (
                     <View style={{backgroundColor: 'white', borderBottomColor: 'gray', flexDirection: 'row-reverse'}}>
