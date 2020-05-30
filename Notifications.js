@@ -1,18 +1,16 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import BottomNavigation from './BottomNavigation';
+import Screen from './Screen'
 import styles from './styles'
 
 const Notifications = ({ navigation, generalSettings }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Screen screenName="Notifications" navigation={navigation}>
       <Text>Notifications go here.</Text>
       <ScrollView style={{ flex: 1 }} />
-      <BottomNavigation navigation={navigation} styles={styles} screenName="Notifications" />
-    </SafeAreaView>
+    </Screen>
   )
 }
 

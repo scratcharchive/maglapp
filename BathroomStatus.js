@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
+import Screen from './Screen'
 
-const BathroomStatus = ({ bathroomStatus }) => {
+const BathroomStatus = ({ bathroomStatus, navigation }) => {
     return (
-        <View>
+        <Screen screenName="BathroomStatus" navigation={navigation}>
             <Text>
                 {JSON.stringify(bathroomStatus, null, 4)}
             </Text>
-        </View>
+        </Screen>
     );
 }
 

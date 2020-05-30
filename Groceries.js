@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity, Clipboard } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { addGroceryItem, deleteGroceryItem, setGroceryItemProperty } from './actions';
-import Swipeable from 'react-native-swipeable';
 import { Link } from '@react-navigation/native';
 import { ListItem, Overlay, CheckBox } from 'react-native-elements'
-import { Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import Screen from './Screen'
+import styles from './styles'
 
-const rightIconSize = 26;
-const itemHeight = 50;
-
-const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGroceryItem, onSetGroceryItemProperty }) => {
+const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGroceryItem, onSetGroceryItemProperty, navigation }) => {
     const [inputText, setInputText] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const [selectedGroceries, setSelectedGroceries] = useState({});
-    const [showSettings, setShowSettings] = useState(false);
     const [hideUnapproved, setHideUnapproved] = useState(false);
     const [addMode, setAddMode] = useState(false);
 
@@ -53,12 +49,12 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
         sortedGroceryItems = sortedGroceryItems.filter(item => (!item.pendingApproval));
     }
     const selectedContainerStyle = {
-        backgroundColor: 'lightblue',
-        height: itemHeight
+        ...styles.groceriesScreen.item.containerStyle,
+        ...styles.groceriesScreen.selectedItem.containerStyle
     }
 
     const unselectedContainerStyle = {
-        height: itemHeight
+        ...styles.groceriesScreen.item.containerStyle
     }
 
     const handleLongPress = (name) => {
@@ -161,12 +157,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
         }
     })
 
-    const menuIconStyle = {
-        marginLeft: 4,
-        paddingRight: 4,
-        paddingBottom: 4,
-        paddingTop: 4
-    }
+    const menuIconStyle = styles.groceriesScreen.menuIconStyle;
 
     const menuIconRaised = false;
 
@@ -224,9 +215,29 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
         />
     )
 
+    const headingTextStyle = {
+        color: 'white',
+        fontSize: 32,
+        backgroundColor: 'lightblue',
+        paddingTop: 10,
+        paddingBottom: 10,
+        textAlign: 'center'
+    };
+
+    const inputTextStyle = {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 15,
+        paddingHorizontal: 15,
+    };
+
     return (
-        <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Next grocery trip in <Link to="/Settings">{generalSettings.numDaysUntilShopping}</Link> days!</Text>
+        <Screen screenName="Groceries" navigation={navigation}>
+            <Text style={headingTextStyle}>Next grocery trip in <Link to="/Settings">{generalSettings.numDaysUntilShopping}</Link> days!</Text>
             {
                 somethingSelected ? (
                     <View style={{backgroundColor: 'white', borderBottomColor: 'gray', flexDirection: 'row-reverse'}}>
@@ -263,7 +274,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
                 addMode && (
                     <TextInput
                         ref={inputRef}
-                        style={styles.inputText}
+                        style={inputTextStyle}
                         onChangeText={text => setInputText(text)}
                         value={inputText}
                         onSubmitEditing={(evt) => handleSubmit(evt.nativeEvent.text)}
@@ -280,7 +291,7 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
                     sortedGroceryItems.map((l, i) => {
                         const pendingApprovalString = l.pendingApproval ? ' (pending...)' : ''
                         const rightIcon = l.pendingApproval ? (
-                            <Icon name="thumb-up" color="gray" size={rightIconSize} onPress={() => onSetGroceryItemProperty(l.name, 'pendingApproval', false)} />
+                            <Icon name="thumb-up" color="gray" size={styles.groceriesScreen.item.rightIconSize} onPress={() => onSetGroceryItemProperty(l.name, 'pendingApproval', false)} />
                         ) : undefined;
                         return (
                             <ListItem
@@ -321,74 +332,9 @@ const Groceries = ({ groceryItems, generalSettings, onAddGroceryItem, onDeleteGr
                     <CheckBox title={"Hide unapproved items"} />
                 </View>
             </Overlay> */}
-        </View>
+        </Screen>
     )
 }
-
-const styles = StyleSheet.create({
-    left: {
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    text: {
-        color: 'green',
-        fontSize: 24,
-        marginLeft: 30
-    },
-    approvedText: {
-        color: 'black',
-        fontSize: 24,
-        marginLeft: 30
-    },
-    unapprovedText: {
-        color: 'gray',
-        fontSize: 24,
-        marginLeft: 30
-    },
-    approvedRow: {
-        flex: 1,
-        paddingLeft: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderTopColor: '#eeeeee',
-        borderTopWidth: 1
-    },
-    unapprovedRow: {
-        flex: 1,
-        paddingLeft: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#eeeeee',
-        borderTopColor: '#dddddd',
-        borderTopWidth: 1
-    },
-    headingText: {
-        color: 'white',
-        fontSize: 32,
-        backgroundColor: 'lightblue',
-        paddingTop: 10,
-        paddingBottom: 10,
-        textAlign: 'center'
-    },
-    inputText: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        backgroundColor: 'white',
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 15,
-        paddingHorizontal: 15,
-    },
-});
 
 const mapStateToProps = state => {
     return {

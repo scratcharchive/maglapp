@@ -8,11 +8,6 @@ const iconColor = 'gray';
 const BottomNavigation = ({ navigation, styles, screenName }) => {
     const buttons = [
         {
-            iconName: "settings",
-            key: "settings",
-            to: "Settings"
-        },
-        {
             iconName: "home",
             key: "home",
             to: "Home"
@@ -26,6 +21,11 @@ const BottomNavigation = ({ navigation, styles, screenName }) => {
             iconName: "notifications",
             key: "notifications",
             to: "Notifications"
+        },
+        {
+            iconName: "settings",
+            key: "settings",
+            to: "Settings"
         }
     ]
     return (

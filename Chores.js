@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React from 'react';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { addGroceryItem, deleteGroceryItem, setGroceryItemProperty } from './actions';
-import Swipeable from 'react-native-swipeable';
-import { Link } from '@react-navigation/native';
+import Screen from './Screen'
 
 
-const Chores = ({ generalSettings }) => {
+const Chores = ({ generalSettings, navigation }) => {
     return (
-        <View style={{ flex: 1 }}>
+        <Screen screenName="Chores" navigation={navigation}>
             <Text>Chore chart will appear here.</Text>
-        </View>
+        </Screen>
     )
 }
 

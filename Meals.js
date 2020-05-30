@@ -1,27 +1,48 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, TouchableOpacity } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useEffect, useState, useRef } from 'react';
+import { TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { addGroceryItem, deleteGroceryItem, setGroceryItemProperty } from './actions';
-import Swipeable from 'react-native-swipeable';
-import { Link } from '@react-navigation/native';
+import Screen from './Screen';
+import { addMealItem, deleteMealItem } from './actions';
+import DayBoxes from './DayBoxes'
+import { randomString } from './randomString'
+import { dayNumberToDate } from './dayNumber';
 
+const Meals = ({ generalSettings, mealItems, navigation, onAddMealItem, onDeleteMealItem }) => {
+    const handleAddItem = ({dayNumber, text}) => {
+        if (text) {
+            onAddMealItem({
+                id: randomString(10),
+                dayNumber: dayNumber,
+                label: text
+            })
+        }
+    }
 
-const Meals = ({ generalSettings }) => {
+    const handleDeleteItem = (item) => {
+        onDeleteMealItem(item.id);
+    }
+
     return (
-        <View style={{ flex: 1 }}>
-            <Text>Meal chart will appear here.</Text>
-        </View>
+        <Screen screenName="Meals" navigation={navigation}>
+            <DayBoxes
+                onAddItem={({dayNumber, text}) => handleAddItem({dayNumber, text})}
+                items={mealItems}
+                onDeleteItem={item => handleDeleteItem(item)}
+            />
+        </Screen>
     )
 }
 
 const mapStateToProps = state => {
     return {
         generalSettings: state.generalSettings,
+        mealItems: state.mealItems
     }
 }
 
 const mapDispatchToProps = dispatch => ({
+    onAddMealItem: (item) => dispatch(addMealItem(item)),
+    onDeleteMealItem: (id) => dispatch(deleteMealItem(id))
 })
 
 export default connect(

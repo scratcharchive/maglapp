@@ -11,7 +11,7 @@ import Meals from './Meals'
 import Groceries from './Groceries'
 import Settings from './Settings'
 import Chat from './Chat'
-import Dojo from './Dojo'
+import Points from './Points'
 import BathroomStatus from './BathroomStatus'
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -52,7 +52,7 @@ const listenToActionStream = async (key) => {
     await sleepMsec(500);
   }
 }
-['bathroomStatus', 'chatItems', 'generalSettings', 'groceryItems'].forEach(
+['bathroomStatus', 'chatItems', 'generalSettings', 'groceryItems', 'mealItems'].forEach(
   key => listenToActionStream(key)
 )
 
@@ -85,7 +85,7 @@ function App() {
             <Stack.Screen name="Chores" options={opts} component={Chores} />
             <Stack.Screen name="Meals" options={opts} component={Meals} />
             <Stack.Screen name="Groceries" options={opts} component={Groceries} />
-            <Stack.Screen name="Dojo" options={opts} component={Dojo} />
+            <Stack.Screen name="Points" options={opts} component={Points} />
             <Stack.Screen name="BathroomStatus" options={opts} component={BathroomStatus} />
           </Stack.Navigator>
         </NavigationContainer>

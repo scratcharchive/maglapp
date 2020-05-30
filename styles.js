@@ -77,11 +77,32 @@ const input = {
     }
 }
 
+const groceriesScreen = {
+    item: {
+        containerStyle: {
+            height: 50
+        },
+        rightIconSize: 26
+    },
+    selectedItem: {
+        containerStyle: {
+            backgroundColor: 'lightblue'
+        }
+    },
+    menuIconStyle: {
+        marginLeft: 4,
+        paddingRight: 12,
+        paddingBottom: 4,
+        paddingTop: 4
+    }
+}
+
 const styles = {
     homeScreen,
     settingsScreen,
     chatScreen,
     bottomNavigation,
+    groceriesScreen,
     input
 }
 

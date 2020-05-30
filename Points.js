@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TextInput, TouchableHighlight, Button, Touchabl
 import { connect } from 'react-redux';
 import { addChatItem } from './actions';
 import { Link } from '@react-navigation/native';
+import Screen from './Screen';
 
 const ChatItem = ({ item, styles }) => {
     return (
@@ -28,10 +29,10 @@ const styles = {
     }
 }
 
-const Reward = ({ reward, dojoRewardCategories }) => {
+const Reward = ({ reward, pointsRewardCategories }) => {
     let icon;
-    if (reward.category in dojoRewardCategories) {
-        const x = dojoRewardCategories[reward.category];
+    if (reward.category in pointsRewardCategories) {
+        const x = pointsRewardCategories[reward.category];
         icon = (
             <Image
                 style={{ width: 30, height: 30 }}
@@ -58,9 +59,9 @@ function formatDate(date) {
     return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
 }
 
-const DojoDay = ({ dojoDay, dojoRewardCategories }) => {
-    const date = new Date(dojoDay.dayNumber * millisecondsPerDay);
-    const totalDayPoints = dojoDay.rewards.map(reward => reward.numPoints).reduce((a, b) => (a + b), 0);
+const PointsDay = ({ pointsDay, pointsRewardCategories }) => {
+    const date = new Date(pointsDay.dayNumber * millisecondsPerDay);
+    const totalDayPoints = pointsDay.rewards.map(reward => reward.numPoints).reduce((a, b) => (a + b), 0);
 
     const handleAdd = () => {
 
@@ -75,8 +76,8 @@ const DojoDay = ({ dojoDay, dojoRewardCategories }) => {
             </Text>
             <View style={{ flexDirection: "row" }}>
                 {
-                    dojoDay.rewards.map((reward, ii) => (
-                        <Reward key={ii} reward={reward} dojoRewardCategories={dojoRewardCategories} />
+                    pointsDay.rewards.map((reward, ii) => (
+                        <Reward key={ii} reward={reward} pointsRewardCategories={pointsRewardCategories} />
                     ))
                 }
                 <Button onPress={handleAdd} title="Add" color="blue" />
@@ -85,18 +86,18 @@ const DojoDay = ({ dojoDay, dojoRewardCategories }) => {
     );
 }
 
-const Dojo = ({ generalSettings, personalSettings, dojoRewards, dojoRewardCategories }) => {
+const Points = ({ generalSettings, personalSettings, pointsRewards, pointsRewardCategories }) => {
     const currentDayNumber = Math.floor((new Date()).getTime() / millisecondsPerDay);
-    const dojoDays = [];
+    const pointsDays = [];
     for (let ii = 0; ii < 10; ii++) {
         const dayNumber = currentDayNumber - ii;
         const date = new Date(dayNumber * millisecondsPerDay);
-        dojoDays.push({
+        pointsDays.push({
             dayNumber,
             rewards: [
             ]
         })
-        dojoDays[0].rewards = [{
+        pointsDays[0].rewards = [{
             category: 'reading',
             numPoints: 3
         },
@@ -111,19 +112,19 @@ const Dojo = ({ generalSettings, personalSettings, dojoRewards, dojoRewardCatego
         ];
     }
 
-    const totalPoints = dojoRewards.map(r => r.numPoints).reduce((a, b) => (a+b), 0);
+    const totalPoints = pointsRewards.map(r => r.numPoints).reduce((a, b) => (a+b), 0);
 
     return (
-        <View style={{ flex: 1 }}>
-            <Text style={styles.header}>Dojo total: <Text style={styles.pointCount}>{totalPoints}</Text></Text>
+        <Screen screenName="Points">
+            <Text style={styles.header}>Points total: <Text style={styles.pointCount}>{totalPoints}</Text></Text>
             <ScrollView style={{ flex: 1 }}>
                 {
-                    dojoDays.map(dojoDay => (
-                        <DojoDay key={dojoDay.dayNumber} dojoDay={dojoDay} dojoRewardCategories={dojoRewardCategories} />
+                    pointsDays.map(pointsDay => (
+                        <PointsDay key={pointsDay.dayNumber} pointsDay={pointsDay} pointsRewardCategories={pointsRewardCategories} />
                     ))
                 }
             </ScrollView>
-        </View>
+        </Screen>
     )
 }
 
@@ -141,8 +142,8 @@ const mapStateToProps = state => ({
     chatItems: state.chatItems,
     generalSettings: state.generalSettings,
     personalSettings: state.personalSettings,
-    dojoRewards: state.dojoRewards || [],
-    dojoRewardCategories: state.dojoRewardCategories || {}
+    pointsRewards: state.pointsRewards || [],
+    pointsRewardCategories: state.pointsRewardCategories || {}
 })
 
 
@@ -153,4 +154,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Dojo)
+)(Points)

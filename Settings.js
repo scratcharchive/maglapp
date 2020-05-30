@@ -6,7 +6,7 @@ import { setGeneralSetting, setPersonalSetting } from './actions';
 import { ButtonGroup } from 'react-native-elements';
 import PersonalSettings from './PersonalSettings';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import BottomNavigation from './BottomNavigation';
+import Screen from './Screen';
 import GeneralSettings from './GeneralSettings';
 import styles from './styles';
 
@@ -15,7 +15,7 @@ const Settings = ({ generalSettings, onSetGeneralSetting, personalSettings, onSe
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <Screen screenName="Settings" navigation={navigation}>
             <ButtonGroup
                 onPress={(newIndex) => {setSelectedIndex(newIndex)}}
                 selectedIndex={selectedIndex}
@@ -44,8 +44,7 @@ const Settings = ({ generalSettings, onSetGeneralSetting, personalSettings, onSe
                     )
                 }
             </ScrollView>
-            <BottomNavigation navigation={navigation} styles={styles} screenName="Settings" />
-        </SafeAreaView>
+        </Screen>
     )
 }
 

@@ -12,8 +12,4 @@ const generalSettings = (state = {}, action) => {
     }
 }
 
-function findGroceryItem(state, name) {
-    return state.filter(item => (item.name === name))[0];
-}
-
 export default generalSettings
